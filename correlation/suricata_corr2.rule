@@ -1,0 +1,24 @@
+###################################################################
+# Multifaceted attack from the same IP directed at a specific host#
+###################################################################
+type=EventGroup
+ptype=RegExp
+pattern=^([0-9]*):([A-Za-z0-9: ]* [0-9:]+) (.*) (CEF\:[0-9]\|OISF\|Suricata\|0\|[0-9]*\|.*\|[0-9]*\|) src=((\b(?:\d{1,3}\.){3}\d{1,3})) dpt=([0-9]*) dst=(\b(?:\d{1,3}\.){3}\d{1,3}) spt=([0-9]*) proto=([A-Z]*) externalId=([0-9]*) rawEvent=([1-9]|[1-9][0-9]|1[0-8][0-9]|19[01]) ([A-Za-z0-9: ]*) ([0-9:]+) (.*) (suricata\[[0-9]*\])\: \[([0-9]*)\:([0-9]*)\:([0-9]*)\] (.*) (\[Classification: .*\]) \[Priority\: ([0-9])*\] \{([A-Za-z]*)\} (\b(?:\d{1,3}\.){3}\d{1,3}):(\d+\b) (\-\>) (\b(?:\d{1,3}\.){3}\d{1,3}):(\d+\b)$
+context=!ATTACKER_IP_$6_VICTIM_IP_$8_SURICATA_ID_$11
+count=alias ATTACKER_$6_VICTIM_$8 ATTACKER_IP_$8_VICTIM_IP_$6_SURICATA_ID_$11; \
+create TRIGGER_$11_$6_$8 120 ( unalias ATTACKER_IP_$6_VICTIM_IP_$8_SURICATA_ID_$11 )
+init=create ATTACKER_$6_VICTIM_$8
+end=delete ATTACKER_$6_VICTIM_$8
+desc=attacking host $6 and victim $8
+action=write /var/www/html/secmon/__secInput $2 $3 CEF:0|OISF|Suricata|$11|$20|Multiple attacks from single IP|6|att=multifaceted_attack src=$6 rawEvent=$0
+thresh=5
+window=120
+
+
+########
+# $2 = date and timestamp
+# $3 = username
+# $6 = attacker IP
+# $8 = victim IP
+# $11 = suricata rule ID
+# $20 = suricata rule name
