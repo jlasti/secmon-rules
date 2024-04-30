@@ -10,7 +10,7 @@ count=alias ATTACKER_$6 HOST_IP_$6_SURICATA_ID_$11; create TRIGGER_$11_$6 120 ( 
 init=create ATTACKER_$6
 end=delete ATTACKER_$6
 desc=attacking host $6
-action=write /var/www/html/secmon/__secInput $2 $3 CEF:0|OISF|Suricata|$11|$20|Multiple attacks from single IP|6|att=multifaceted_attack src=$6 rawEvent=$0
+action=write /var/www/html/secmon/__secInput $2 $3 CEF:0|OISF|Suricata|$11|$20|Multiple attacks at various hosts|6|att=multifaceted_attack src=$6 rawEvent=$0
 thresh=5
 window=120
 
@@ -35,7 +35,7 @@ create TRIGGER_$11_$6_$8 120 ( unalias ATTACKER_IP_$6_VICTIM_IP_$8_SURICATA_ID_$
 init=create ATTACKER_$6_VICTIM_$8
 end=delete ATTACKER_$6_VICTIM_$8
 desc=attacking host $6 and victim $8
-action=write /var/www/html/secmon/__secInput $2 $3 CEF:0|OISF|Suricata|$11|$20|Multiple attacks from single IP|6|att=multifaceted_attack src=$6 rawEvent=$0
+action=write /var/www/html/secmon/__secInput $2 $3 CEF:0|OISF|Suricata|$11|$20|Multiple attacks at a specific host|6|att=multifaceted_attack src=$6 rawEvent=$0
 thresh=5
 window=120
 
