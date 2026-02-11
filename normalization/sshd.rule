@@ -4,6 +4,7 @@
 #
 # Logs example:
 # Oct 10 2018 16:35:55 localhost sshd[5507]: Failed password for invalid user asd from ::1 port 55308 ssh2
+# Feb 11 2026 18:13:12 server sshd[3399]: Invalid user attacker from 127.0.0.1 port 39858
 # Apr 10 2018 06:39:27 echo sshd[22297]: reverse mapping checking getaddrinfo for 222-237-78-139.tongkni.co.kr failed - POSSIBLE BREAK-IN ATTEMPT!
 # Jul 24 2018 22:06:54 server1 sshd[8261]: Accepted publickey for root from xxx.xxx.xx.xxx port 39721 ssh2
 # Jul 24 2018 22:06:54 server1 sshd[8261]: Address xx.yyy.zzz.x maps to xx.yyy.zzz.x.static-pune-vsnl.net.in, but this does not map back to the address - POSSIBLE BREAK-IN ATTEMPT!
@@ -23,6 +24,13 @@ continue=dontcont
 pattern=^([1-9]|[1-9][0-9]|1[0-8][0-9]|19[01]) ([A-Za-z0-9: ]*) ([0-9:]+) (.*) sshd\[(\d+)\]:.*Failed (password) for( invalid user)? (\S+) from (.*) port (\d+) ssh2$
 desc=$2 failed ssh login to $4 from $9 for user $8 on port $10
 action=write /var/log/secmon/__secInput $2 $3 $4 CEF:0|Linux|sshd|0|130|Wrong password|$1|src=$9 spt=$10 outcome=failure app=SSHv2 destinationServiceName=sshd duser=$8 dpid=$5 dhost=$4 reason=$6$7 rawEvent=$0
+
+type=Single
+ptype=Regexp
+continue=dontcont
+pattern=^([1-9]|[1-9][0-9]|1[0-8][0-9]|19[01]) ([A-Za-z0-9: ]*) ([0-9:]+) (.*) sshd\[(\d+)\]:.*Invalid user (\S+) from (\S+) port (\d+)$
+desc=$2 failed ssh login to $4 from $7 for user $6 on port $8
+action=write /var/log/secmon/__secInput $2 $3 $4 CEF:0|Linux|sshd|0|130|Invalid user|$1|src=$7 spt=$8 outcome=failure app=SSHv2 destinationServiceName=sshd duser=$6 dpid=$5 dhost=$4 reason=invalid user rawEvent=$0
 
 type=Single
 ptype=Regexp
