@@ -1,0 +1,43 @@
+# ==================================
+# === MISP HIGH Threat Match (TL=1) ===
+# ==================================
+
+type=Single
+ptype=RegExp
+continue=TakeNext
+pattern=(?:\d+:)?(\w{3}\s+\d{1,2}\s+\d{2}:\d{2}:\d{2})\s+(\S+)\s+CEF:.*?SecmonMisp(Src|Dst)Hit=true\s+SecmonMisp\1Id=(\d+)\s+SecmonMisp\1Tl=1
+desc=TEST: MISP $3 HIGH threat (Attr ID: $4)
+action=write /var/www/html/secmon/__secInput $1 $2 CEF:0|Security|MISP|1|200|MISP High Threat Match|8|att=SecmonMispIntel SecmonMispHitType=$3 SecmonMispAttributeId=$4 SecmonMispThreatLevel=1 rawEvent=$0
+
+# ==================================
+# === MISP MEDIUM Threat Match (TL=2) ===
+# ==================================
+
+type=Single
+ptype=RegExp
+continue=TakeNext
+pattern=(?:\d+:)?(\w{3}\s+\d{1,2}\s+\d{2}:\d{2}:\d{2})\s+(\S+)\s+CEF:.*?SecmonMisp(Src|Dst)Hit=true\s+SecmonMisp\1Id=(\d+)\s+SecmonMisp\1Tl=2
+desc=TEST: MISP $3 MEDIUM threat (Attr ID: $4)
+action=write /var/www/html/secmon/__secInput $1 $2 CEF:0|Security|MISP|1|200|MISP Medium Threat Match|5|att=SecmonMispIntel SecmonMispHitType=$3 SecmonMispAttributeId=$4 SecmonMispThreatLevel=2 rawEvent=$0
+
+# ==================================
+# === MISP LOW Threat Match (TL=3) ===
+# ==================================
+
+type=Single
+ptype=RegExp
+continue=TakeNext
+pattern=(?:\d+:)?(\w{3}\s+\d{1,2}\s+\d{2}:\d{2}:\d{2})\s+(\S+)\s+CEF:.*?SecmonMisp(Src|Dst)Hit=true\s+SecmonMisp\1Id=(\d+)\s+SecmonMisp\1Tl=3
+desc=TEST: MISP $3 LOW threat (Attr ID: $4)
+action=write /var/www/html/secmon/__secInput $1 $2 CEF:0|Security|MISP|1|200|MISP Low Threat Match|3|att=SecmonMispIntel SecmonMispHitType=$3 SecmonMispAttributeId=$4 SecmonMispThreatLevel=3 rawEvent=$0
+
+# ==================================
+# === MISP UNDEFINED Threat Match (TL=4) ===
+# ==================================
+
+type=Single
+ptype=RegExp
+continue=TakeNext
+pattern=(?:\d+:)?(\w{3}\s+\d{1,2}\s+\d{2}:\d{2}:\d{2})\s+(\S+)\s+CEF:.*?SecmonMisp(Src|Dst)Hit=true\s+SecmonMisp\1Id=(\d+)\s+SecmonMisp\1Tl=4
+desc=TEST: MISP $3 UNDEFINED threat (Attr ID: $4)
+action=write /var/www/html/secmon/__secInput $1 $2 CEF:0|Security|MISP|1|200|MISP Undefined Threat Match|2|att=SecmonMispIntel SecmonMispHitType=$3 SecmonMispAttributeId=$4 SecmonMispThreatLevel=4 rawEvent=$0
